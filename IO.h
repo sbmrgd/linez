@@ -43,7 +43,7 @@
 
 // ------ Enums -----
 
-enum color { BLACK1,   RED,   GREEN, BLUE,   CYAN, MAGENTA, YELLOW, ORANGE, PURPLE, WHITE1,GREY,GREY2, COLOR_MAX }; // Colors
+enum color { BLACK1, RED, GREEN, BLUE, CYAN, MAGENTA, YELLOW, ORANGE, PURPLE, WHITE1, GREY, GREY2, COLOR_MAX}; // Colors
 
 
 

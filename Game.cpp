@@ -51,7 +51,7 @@ Game::Game(Board *pBoard, Pieces *pPieces, int pScreenHeight)
 	// Get the pointer to the Board and Pieces classes
 	mBoard = pBoard;
 	mPieces = pPieces;
-    Pokitto::Display::clear();
+    //Pokitto::Display::clear();
 	// Game initialization
 	InitGame();
 }
@@ -85,14 +85,14 @@ void Game::InitGame()
 	// First piece
 	mPiece = GetRand(0, 6);
 	mRotation = GetRand(0, 3);
-	mPosX = (BOARD_WIDTH / 2) + mPieces->GetXInitialPosition(mPiece, mRotation);
+	mPosX = (boardWidth / 2) + mPieces->GetXInitialPosition(mPiece, mRotation);
 	mPosY = mPieces->GetYInitialPosition(mPiece, mRotation);
 	DetermineVerticalPosGhost();
 
 	//  Next piece
 	mNextPiece = GetRand(0, 6);
 	mNextRotation = GetRand(0, 3);
-	mNextPosX = BOARD_WIDTH + 4;
+	mNextPosX = boardWidth + 4;
 	mNextPosY = 5;
 }
 
@@ -107,7 +107,7 @@ void Game::CreateNewPiece()
 	// The new piece
 	mPiece = mNextPiece;
 	mRotation = mNextRotation;
-	mPosX = (BOARD_WIDTH / 2) + mPieces->GetXInitialPosition(mPiece, mRotation);
+	mPosX = (boardWidth / 2) + mPieces->GetXInitialPosition(mPiece, mRotation);
 	mPosY = mPieces->GetYInitialPosition(mPiece, mRotation);
 	DetermineVerticalPosGhost();
 	// Random next piece
@@ -161,18 +161,16 @@ void Game::DrawPiece(int pX, int pY, int pPiece, int pRotation)
 	default: mColor = BLUE;
 	}
 	// Travel the matrix of blocks of the piece and draw the blocks that are filled
-	for (int i = 0; i < PIECE_BLOCKS; i++)
+	for (int i = 0; i < pieceBlocks; i++)
 	{
-		for (int j = 0; j < PIECE_BLOCKS; j++)
+		for (int j = 0; j < pieceBlocks; j++)
 		{
 			// Get the type of the block and draw it with the correct color
 
 			if (mPieces->GetBlockType(pPiece, pRotation, j, i) != 0)
             {
                 Pokitto::Core::display.setColor(mColor);
-                Pokitto::Core::display.fillRectangle(mPixelsX + i * BLOCK_SIZE,
-				mPixelsY + j * BLOCK_SIZE,
-				BLOCK_SIZE-1, BLOCK_SIZE-2);
+                Pokitto::Core::display.fillRectangle(mPixelsX + i * blockSize, mPixelsY + j * blockSize, blockSize-1, blockSize-2);
             }
 
 		}
@@ -203,18 +201,16 @@ void Game::DrawPiece_Ghost(int pX, int pY, int pPiece, int pRotation)
 	 mColor = GREY2;
 
 	// Travel the matrix of blocks of the piece and draw the blocks that are filled
-	for (int i = 0; i < PIECE_BLOCKS; i++)
+	for (int i = 0; i < pieceBlocks; i++)
 	{
-		for (int j = 0; j < PIECE_BLOCKS; j++)
+		for (int j = 0; j < pieceBlocks; j++)
 		{
 			// Get the type of the block and draw it with the correct color
 
 			if (mPieces->GetBlockType(pPiece, pRotation, j, i) != 0)
 			{
 			    Pokitto::Core::display.setColor(mColor);
-                Pokitto::Core::display.drawRectangle(mPixelsX + i * BLOCK_SIZE,
-				mPixelsY + j * BLOCK_SIZE,
-				BLOCK_SIZE-2, BLOCK_SIZE-2);
+                Pokitto::Core::display.drawRectangle(mPixelsX + i * blockSize, mPixelsY + j * blockSize, blockSize-2, blockSize-2);
 			}
 
 		}
@@ -232,20 +228,20 @@ Draw the two lines that delimit the board
 void Game::DrawBoard()
 {
 	// Calculate the limits of the board in pixels
-	int mX1 = BOARD_POSITION - (BLOCK_SIZE * (BOARD_WIDTH / 2)) - 1;
-	int mX2 = BOARD_POSITION + (BLOCK_SIZE * (BOARD_WIDTH / 2));
-	int mY = mScreenHeight - (BLOCK_SIZE * BOARD_HEIGHT);
+	int mX1 = boardPosition - (blockSize * (boardWidth / 2)) - 1;
+	int mX2 = boardPosition + (blockSize * (boardWidth / 2));
+	int mY = mScreenHeight - (blockSize * boardHeight);
 
 	// Check that the vertical margin is not to small
 	//assert (mY > MIN_VERTICAL_MARGIN);
 
 	// Rectangles that delimits the board
 	Pokitto::Core::display.setColor(WHITE1);
-    Pokitto::Core::display.fillRectangle(mX1 - BOARD_LINE_WIDTH, mY, BOARD_LINE_WIDTH, mScreenHeight - 1-mY);
-    Pokitto::Core::display.fillRectangle(mX2, mY, BOARD_LINE_WIDTH, mScreenHeight - 1-mY);
+    Pokitto::Core::display.fillRectangle(mX1 - boardLineWidth, mY, boardLineWidth, mScreenHeight - 1-mY);
+    Pokitto::Core::display.fillRectangle(mX2, mY, boardLineWidth, mScreenHeight - 1-mY);
 
 	// Rectangles that delimit the next piece
-	Pokitto::Core::display.fillRectangle(mX2, mBoard->GetYPosInPixels(mNextPosY + 2),mBoard->GetXPosInPixels(mNextPosX - 1) + 2-mX2, BOARD_LINE_WIDTH);
+	Pokitto::Core::display.fillRectangle(mX2, mBoard->GetYPosInPixels(mNextPosY + 2),mBoard->GetXPosInPixels(mNextPosX - 1) + 2-mX2, boardLineWidth);
 	Pokitto::Core::display.fillRectangle(mBoard->GetXPosInPixels(mNextPosX - 1) - 2, mBoard->GetYPosInPixels(mNextPosY - 1) - 2, mBoard->GetXPosInPixels(mNextPosX + 5)-mBoard->GetXPosInPixels(mNextPosX - 1) + 4, mBoard->GetYPosInPixels(mNextPosY + 5)-mBoard->GetYPosInPixels(mNextPosY - 1) + 4);
 	Pokitto::Core::display.setColor(BLACK1);
 	Pokitto::Core::display.fillRectangle(mBoard->GetXPosInPixels(mNextPosX - 1) + 2, mBoard->GetYPosInPixels(mNextPosY - 1) + 2, mBoard->GetXPosInPixels(mNextPosX + 5)-mBoard->GetXPosInPixels(mNextPosX - 1) - 4, mBoard->GetYPosInPixels(mNextPosY + 5)-mBoard->GetYPosInPixels(mNextPosY - 1) - 4);
@@ -255,14 +251,14 @@ void Game::DrawBoard()
 
 	// Drawing the blocks that are already stored in the board
 	mX1 += 1;
-	for (int i = 0; i < BOARD_WIDTH; i++)
+	for (int i = 0; i < boardWidth; i++)
 	{
-		for (int j = 0; j < BOARD_HEIGHT; j++)
+		for (int j = 0; j < boardHeight; j++)
 		{
 			// Check if the block is filled, if so, draw it
 			if (!mBoard->IsFreeBlock(i, j)) {
                 Pokitto::Core::display.setColor(mBoard->GetColor(i,j));
-                Pokitto::Core::display.fillRectangle(mX1 + i * BLOCK_SIZE, mY + j * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 2);
+                Pokitto::Core::display.fillRectangle(mX1 + i * blockSize, mY + j * blockSize, blockSize - 1, blockSize - 2);
 			}
 
 

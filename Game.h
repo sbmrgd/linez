@@ -46,8 +46,8 @@
 
 // ------ Defines -----
 
-#define WAIT_TIME 1000           // Number of milliseconds that the piece remains before going 1 block down */
-
+//#define WAIT_TIME 1000           // Number of milliseconds that the piece remains before going 1 block down */
+const uint32_t waitTime = 1000;
 
 // --------------------------------------------------------------------------------
 //                                   Game

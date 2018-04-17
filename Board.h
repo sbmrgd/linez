@@ -46,14 +46,12 @@
 
 // ------ Defines -----
 
-#define BOARD_LINE_WIDTH 4          // Width of each of the two lines that delimit the board
-#define BLOCK_SIZE 4               // Width and Height of each block of a piece
-#define BOARD_POSITION 50          // Center position of the board from the left of the screen
-#define BOARD_WIDTH 10              // Board width in blocks
-#define BOARD_HEIGHT 20             // Board height in blocks
-#define MIN_VERTICAL_MARGIN 20      // Minimum vertical margin for the board limit
-#define MIN_HORIZONTAL_MARGIN 20    // Minimum horizontal margin for the board limit
-#define PIECE_BLOCKS 5              // Number of horizontal and vertical blocks of a matrix piece
+const int boardLineWidth = 4;          // Width of each of the two lines that delimit the board
+const int blockSize = 4;               // Width and Height of each block of a piece
+const int boardPosition = 50;          // Center position of the board from the left of the screen
+const int boardWidth = 10;              // Board width in blocks
+const int boardHeight = 20;             // Board height in blocks
+const int pieceBlocks = 5;              // Number of horizontal and vertical blocks of a matrix piece
 
 
 // --------------------------------------------------------------------------------
@@ -77,7 +75,7 @@ public:
 
 private:
 
-	color mBoardcolor[BOARD_WIDTH][BOARD_HEIGHT];
+	color mBoardcolor[boardWidth][boardHeight];
 	Pieces *mPieces;
 	int mScreenHeight;
 

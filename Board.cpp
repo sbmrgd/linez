@@ -64,11 +64,11 @@ Init the board blocks with free positions
 */
 void Board::InitBoard()
 {
-	for (int i = 0; i < BOARD_WIDTH; i++)
-		for (int j = 0; j < BOARD_HEIGHT; j++)
+	for (int i = 0; i < boardWidth; i++)
+		for (int j = 0; j < boardHeight; j++)
 		{
 			//mBoard[i][j] = POS_FREE;
-			mBoardcolor[i][j] = BLACK1;
+			mBoardcolor[i][j] = color::BLACK1;
 		}
 }
 
@@ -99,9 +99,9 @@ void Board::StorePiece(int pX, int pY, int pPiece, int pRotation)
 	case 6: mColor = PURPLE; break;
 	default: mColor = BLUE;
 	}
-	for (int i1 = pX, i2 = 0; i1 < pX + PIECE_BLOCKS; i1++, i2++)
+	for (int i1 = pX, i2 = 0; i1 < pX + pieceBlocks; i1++, i2++)
 	{
-		for (int j1 = pY, j2 = 0; j1 < pY + PIECE_BLOCKS; j1++, j2++)
+		for (int j1 = pY, j2 = 0; j1 < pY + pieceBlocks; j1++, j2++)
 		{
 			// Store only the blocks of the piece that are not holes
 			if (mPieces->GetBlockType(pPiece, pRotation, j2, i2) != 0)
@@ -124,7 +124,7 @@ Returns true or false
 bool Board::IsGameOver()
 {
 	//If the first line has blocks, then, game over
-	for (int i = 0; i < BOARD_WIDTH; i++)
+	for (int i = 0; i < boardWidth; i++)
 	{
 	//	if (mBoard[i][0] == POS_FILLED) return true;
 		if (mBoardcolor[i][0] != BLACK1) return true;
@@ -148,7 +148,7 @@ void Board::DeleteLine(int pY)
 	// Moves all the upper lines one row down
 	for (int j = pY; j > 0; j--)
 	{
-		for (int i = 0; i < BOARD_WIDTH; i++)
+		for (int i = 0; i < boardWidth; i++)
 		{
 			//mBoard[i][j] = mBoard[i][j - 1];
 			mBoardcolor[i][j] = mBoardcolor[i][j - 1];
@@ -165,17 +165,17 @@ Delete all the lines that should be removed
 int Board::DeletePossibleLines()
 {
 	int nr_of_lines = 0;
-	for (int j = 0; j < BOARD_HEIGHT; j++)
+	for (int j = 0; j < boardHeight; j++)
 	{
 		int i = 0;
-		while (i < BOARD_WIDTH)
+		while (i < boardWidth)
 		{
 			//if (mBoard[i][j] != POS_FILLED) break;
 			if (mBoardcolor[i][j] == BLACK1) break;
 			i++;
 		}
 
-		if (i == BOARD_WIDTH) {
+		if (i == boardWidth) {
 //			for (int k = 0; k < BOARD_WIDTH; k++){
 //				mBoardcolor[k][j] = BLUE;
 //			}
@@ -219,7 +219,7 @@ Parameters:
 */
 int Board::GetXPosInPixels(int pPos)
 {
-	return  ((BOARD_POSITION - (BLOCK_SIZE * (BOARD_WIDTH / 2))) + (pPos * BLOCK_SIZE));
+	return  ((boardPosition - (blockSize * (boardWidth / 2))) + (pPos * blockSize));
 }
 
 
@@ -234,7 +234,7 @@ Parameters:
 */
 int Board::GetYPosInPixels(int pPos)
 {
-	return ((mScreenHeight - (BLOCK_SIZE * BOARD_HEIGHT)) + (pPos * BLOCK_SIZE));
+	return ((mScreenHeight - (blockSize * boardHeight)) + (pPos * blockSize));
 }
 
 
@@ -255,14 +255,14 @@ bool Board::IsPossibleMovement(int pX, int pY, int pPiece, int pRotation)
 {
 	// Checks collision with pieces already stored in the board or the board limits
 	// This is just to check the 5x5 blocks of a piece with the appropiate area in the board
-	for (int i1 = pX, i2 = 0; i1 < pX + PIECE_BLOCKS; i1++, i2++)
+	for (int i1 = pX, i2 = 0; i1 < pX + pieceBlocks; i1++, i2++)
 	{
-		for (int j1 = pY, j2 = 0; j1 < pY + PIECE_BLOCKS; j1++, j2++)
+		for (int j1 = pY, j2 = 0; j1 < pY + pieceBlocks; j1++, j2++)
 		{
 			// Check if the piece is outside the limits of the board
 			if (i1 < 0 ||
-				i1 > BOARD_WIDTH - 1 ||
-				j1 > BOARD_HEIGHT - 1)
+				i1 > boardWidth - 1 ||
+				j1 > boardHeight - 1)
 			{
 				if (mPieces->GetBlockType(pPiece, pRotation, j2, i2) != 0)
 					return 0;

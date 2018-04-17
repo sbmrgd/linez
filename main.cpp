@@ -44,7 +44,7 @@
 #include "Game.h"
 Pokitto::Core mygame;
 
-enum GameState { TitleScreen,   GamePlay,   GameOver };
+enum class GameState { TitleScreen,   GamePlay,   GameOver };
 uint32_t mTime1 = mygame.getTime();
 uint32_t mTime2 = 0;
 double speed = 1;
@@ -56,8 +56,8 @@ int score = 0;
 int mScreenHeight = mygame.display.getHeight();
 int offset = 0;
 int direction = 1;
-color endcolor = WHITE1;
-GameState gameState;
+color c_color = WHITE1;
+GameState gameState = GameState::TitleScreen;
 // Pieces
 Pieces mPieces2;
 
@@ -71,11 +71,11 @@ void showTitleScreen() {
     mygame.display.setColor(ORANGE);
     mygame.display.setFont(fontKoubit);
     mTime2 = mygame.getTime();
-    if ((mTime2 - mTime1)>WAIT_TIME/8){
+    if ((mTime2 - mTime1)>waitTime/8){
         offset+=direction;
         if (offset==0) direction = 1;
         if (offset==80) direction = -1;
-        if (endcolor==WHITE1) endcolor= BLACK1; else endcolor = WHITE1;
+        if (c_color==WHITE1) c_color= BLACK1; else c_color = WHITE1;
         mTime1 = mygame.getTime();
     }
     for(int i=10;i<mygame.display.getHeight()/2-mygame.display.fontHeight/2;i+=10)
@@ -87,12 +87,12 @@ void showTitleScreen() {
     for(int i=mygame.display.getHeight()-10;i>mygame.display.getHeight()/2+mygame.display.fontHeight/2;i-=10)
         mygame.display.drawLine(0,i-offset,mygame.display.getWidth(),i-offset);
 
-    mygame.display.setColor(endcolor);
+    mygame.display.setColor(c_color);
     mygame.display.setCursor(mygame.display.getWidth()/2-mygame.display.fontWidth*3+5,mygame.display.getHeight()-mygame.display.fontHeight-3);
     mygame.display.println("Press C");
 
     if (mygame.buttons.pressed(BTN_C)) {
-        gameState = GamePlay;
+        gameState = GameState::GamePlay;
         mygame.display.setFont(font3x5);
         mBoard = Board(&mPieces2, mScreenHeight);
         speed = 1;
@@ -104,6 +104,7 @@ void showTitleScreen() {
         mGame.DetermineVerticalPosGhost();
     }
 }
+
 void playGame() {
     if(!(mBoard.IsGameOver())){
         mGame.DrawScene(level,total_nr_lines,score);
@@ -147,7 +148,7 @@ void playGame() {
 
         mTime2 = mygame.getTime();
 
-		if ((mTime2 - mTime1) > WAIT_TIME / speed)
+		if ((mTime2 - mTime1) > waitTime / speed)
 		{
 			if (mBoard.IsPossibleMovement(mGame.mPosX, mGame.mPosY + 1, mGame.mPiece, mGame.mRotation))
 			{
@@ -178,7 +179,7 @@ void playGame() {
     }
 
     else{
-        gameState = GameOver;
+        gameState = GameState::GameOver;
 
     }
 }
@@ -199,18 +200,18 @@ void showGameOver(){
     mygame.display.println();
 
     mTime2 = mygame.getTime();
-    if ((mTime2 - mTime1)>WAIT_TIME/8)
+    if ((mTime2 - mTime1)>waitTime/8)
         {
-            if (endcolor==WHITE1) endcolor= BLACK1; else endcolor = WHITE1;
+            if (c_color==WHITE1) c_color= BLACK1; else c_color = WHITE1;
             mTime1 = mygame.getTime();
         }
 
     mygame.display.setCursor(mygame.display.getWidth()/2-mygame.display.fontWidth*3+5,mygame.display.getHeight()-mygame.display.fontHeight-3);
-    mygame.display.setColor(endcolor);
+    mygame.display.setColor(c_color);
     mygame.display.println("Press C");
 
     if (mygame.buttons.pressed(BTN_C)) {
-                    gameState = TitleScreen;
+                    gameState = GameState::TitleScreen;
     }
 }
 
@@ -218,13 +219,13 @@ int main () {
     mygame.begin();
     mygame.display.setFont(font3x5);
     mygame.display.loadRGBPalette(paletteLinez);
-    gameState = TitleScreen;
+    //gameState = GameState::TitleScreen;
     while (mygame.isRunning()) {
         if (mygame.update()) {
                 switch(gameState){
-                    case TitleScreen: showTitleScreen(); break;
-                    case GamePlay: playGame(); break;
-                    case GameOver: showGameOver(); break;
+                    case GameState::TitleScreen: showTitleScreen(); break;
+                    case GameState::GamePlay: playGame(); break;
+                    case GameState::GameOver: showGameOver(); break;
                 }
         }
     }
