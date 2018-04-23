@@ -39,7 +39,7 @@
 #ifndef PIECES_H_INCLUDED
 #define PIECES_H_INCLUDED
 
-
+#include "IO.h"
 
 // --------------------------------------------------------------------------------
 //									 Pieces
@@ -48,10 +48,10 @@
 class Pieces
 {
 public:
-
-	int GetBlockType(int pPiece, int pRotation, int pX, int pY);
-	int GetXInitialPosition(int pPiece, int pRotation);
-	int GetYInitialPosition(int pPiece, int pRotation);
+	static int GetBlockType(int pPiece, int pRotation, int pX, int pY);
+	static int GetXInitialPosition(int pPiece, int pRotation);
+	static int GetYInitialPosition(int pPiece, int pRotation);
+	static color GetPieceColor(int pieceKind);
 };
 
 

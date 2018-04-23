@@ -57,7 +57,7 @@ class Game
 {
 public:
 
-	Game(Board *pBoard, Pieces *pPieces, int pScreenHeight);
+	Game(Board &pBoard, int pScreenHeight);
 
 	void DrawScene(int level, int nroflines, int score);
 	void CreateNewPiece();
@@ -75,7 +75,7 @@ private:
 	int pos_raster_lines = 0;
 
 	Board *mBoard;
-	Pieces *mPieces;
+	//Pieces *mPieces;
 
 	int GetRand(int pA, int pB);
 	void InitGame();

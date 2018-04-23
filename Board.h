@@ -62,7 +62,8 @@ class Board
 {
 public:
 
-	Board(Pieces *pPieces, int pScreenHeight);
+	//Board(Pieces &pPieces, int pScreenHeight);
+	Board(int pScreenHeight);
 
 	int GetXPosInPixels(int pPos);
 	int GetYPosInPixels(int pPos);
@@ -76,7 +77,7 @@ public:
 private:
 
 	color mBoardcolor[boardWidth][boardHeight];
-	Pieces *mPieces;
+	//Pieces *mPieces;
 	int mScreenHeight;
 
 	void InitBoard();

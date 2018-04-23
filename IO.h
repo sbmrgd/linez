@@ -39,11 +39,11 @@
 #ifndef IO_H_INCLUDED
 #define IO_H_INCLUDED
 // ------ Includes -----
-
+#include <cstdint>
 
 // ------ Enums -----
 
-enum color { BLACK1, RED, GREEN, BLUE, CYAN, MAGENTA, YELLOW, ORANGE, PURPLE, WHITE1, GREY, GREY2, COLOR_MAX}; // Colors
+enum class color{ Black, Red, Green, Blue, Cyan, Magenta, Yellow, Orange, Purple, White, Grey, Grey2, Color_Max}; // Colors
 
 
 
@@ -72,5 +72,5 @@ const unsigned char paletteLinez[48] = {
 //									 IO
 // --------------------------------------------------------------------------------
 
-
+uint8_t colorToIndex(color c);
 #endif // IO_H_INCLUDED

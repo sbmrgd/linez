@@ -44,13 +44,13 @@
 Init
 ==================
 */
-Board::Board(Pieces *pPieces, int pScreenHeight)
+Board::Board(int pScreenHeight)
 {
 	// Get the screen height
 	mScreenHeight = pScreenHeight;
 
 	// Get the pointer to the pieces class
-	mPieces = pPieces;
+	//mPieces = &pPieces;
 
 	//Init the board blocks with free positions
 	InitBoard();
@@ -68,7 +68,7 @@ void Board::InitBoard()
 		for (int j = 0; j < boardHeight; j++)
 		{
 			//mBoard[i][j] = POS_FREE;
-			mBoardcolor[i][j] = color::BLACK1;
+			mBoardcolor[i][j] = color::Black;
 		}
 }
 
@@ -87,24 +87,15 @@ Parameters:
 void Board::StorePiece(int pX, int pY, int pPiece, int pRotation)
 {
 	// Store each block of the piece into the board
-	color mColor;
-	switch (pPiece)
-	{
-	case 0: mColor = YELLOW; break;
-	case 1: mColor = CYAN; break;
-	case 2: mColor = ORANGE; break;
-	case 3: mColor = BLUE; break;
-	case 4: mColor = RED; break;
-	case 5: mColor = GREEN; break;
-	case 6: mColor = PURPLE; break;
-	default: mColor = BLUE;
-	}
+	//const color mColor = mPieces->GetPieceColor(pPiece);
+	const color mColor = Pieces::GetPieceColor(pPiece);
 	for (int i1 = pX, i2 = 0; i1 < pX + pieceBlocks; i1++, i2++)
 	{
 		for (int j1 = pY, j2 = 0; j1 < pY + pieceBlocks; j1++, j2++)
 		{
 			// Store only the blocks of the piece that are not holes
-			if (mPieces->GetBlockType(pPiece, pRotation, j2, i2) != 0)
+			//if (mPieces->GetBlockType(pPiece, pRotation, j2, i2) != 0)
+            if (Pieces::GetBlockType(pPiece, pRotation, j2, i2) != 0)
 			{
 				//mBoard[i1][j1] = POS_FILLED;
 				mBoardcolor[i1][j1] = mColor;
@@ -127,7 +118,7 @@ bool Board::IsGameOver()
 	for (int i = 0; i < boardWidth; i++)
 	{
 	//	if (mBoard[i][0] == POS_FILLED) return true;
-		if (mBoardcolor[i][0] != BLACK1) return true;
+		if (mBoardcolor[i][0] != color::Black) return true;
 	}
 
 	return false;
@@ -171,7 +162,7 @@ int Board::DeletePossibleLines()
 		while (i < boardWidth)
 		{
 			//if (mBoard[i][j] != POS_FILLED) break;
-			if (mBoardcolor[i][j] == BLACK1) break;
+			if (mBoardcolor[i][j] == color::Black) break;
 			i++;
 		}
 
@@ -200,7 +191,7 @@ Parameters:
 bool Board::IsFreeBlock(int pX, int pY)
 {
 	//if (mBoard[pX][pY] == POS_FREE) return true; else return false;
-	if (mBoardcolor[pX][pY] == BLACK1) return true; else return false;
+	if (mBoardcolor[pX][pY] == color::Black) return true; else return false;
 }
 
 
@@ -264,15 +255,16 @@ bool Board::IsPossibleMovement(int pX, int pY, int pPiece, int pRotation)
 				i1 > boardWidth - 1 ||
 				j1 > boardHeight - 1)
 			{
-				if (mPieces->GetBlockType(pPiece, pRotation, j2, i2) != 0)
+				//if (mPieces->GetBlockType(pPiece, pRotation, j2, i2) != 0)
+                if (Pieces::GetBlockType(pPiece, pRotation, j2, i2) != 0)
 					return 0;
 			}
 
 			// Check if the piece have collisioned with a block already stored in the map
 			if (j1 >= 0)
 			{
-				if ((mPieces->GetBlockType(pPiece, pRotation, j2, i2) != 0) &&
-					(!IsFreeBlock(i1, j1)))
+				//if ((mPieces->GetBlockType(pPiece, pRotation, j2, i2) != 0) && (!IsFreeBlock(i1, j1)))
+                if ((Pieces::GetBlockType(pPiece, pRotation, j2, i2) != 0) && (!IsFreeBlock(i1, j1)))
 					return false;
 			}
 		}

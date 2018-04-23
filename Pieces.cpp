@@ -318,6 +318,19 @@ int mPiecesInitialPosition[7 /*kind */][4 /* r2otation */][2 /* position */] =
 	},
 };
 
+color pieceColorLookup[] =
+{
+  color::Yellow,
+  color::Cyan,
+  color::Orange,
+  color::Blue,
+  color::Red,
+  color::Green,
+  color::Purple,
+};
+constexpr const std::size_t pieceColorLookupSize = sizeof(pieceColorLookup) / sizeof(color);
+
+
 /*
 ======================================
 Return the type of a block (0 = no-block, 1 = normal block, 2 = pivot block)
@@ -367,4 +380,22 @@ Parameters:
 int Pieces::GetYInitialPosition(int pPiece, int pRotation)
 {
 	return mPiecesInitialPosition[pPiece][pRotation][1];
+}
+
+
+/*
+======================================
+Returns the color of the piece.
+
+Parameters:
+
+>> pPiece:    Piece to draw
+======================================
+*/
+color Pieces::GetPieceColor(int pieceKind)
+{
+  if(static_cast<std::size_t>(pieceKind) < pieceColorLookupSize)
+    return pieceColorLookup[pieceKind];
+  else
+    return color::Blue;
 }

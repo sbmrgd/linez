@@ -56,26 +56,28 @@ int score = 0;
 int mScreenHeight = mygame.display.getHeight();
 int offset = 0;
 int direction = 1;
-color c_color = WHITE1;
+color c_color = color::White;
 GameState gameState = GameState::TitleScreen;
 // Pieces
-Pieces mPieces2;
+//Pieces mPieces2;
 
 // Board
-Board mBoard(&mPieces2, mScreenHeight);
+//Board mBoard(mPieces2, mScreenHeight);
+Board mBoard(mScreenHeight);
 
 // Game
-Game mGame(&mBoard, &mPieces2, mScreenHeight);
+//Game mGame(mBoard, mPieces2, mScreenHeight);
+Game mGame(mBoard, mScreenHeight);
 
 void showTitleScreen() {
-    mygame.display.setColor(ORANGE);
+    mygame.display.setColor(colorToIndex(color::Orange));
     mygame.display.setFont(fontKoubit);
     mTime2 = mygame.getTime();
     if ((mTime2 - mTime1)>waitTime/8){
         offset+=direction;
         if (offset==0) direction = 1;
         if (offset==80) direction = -1;
-        if (c_color==WHITE1) c_color= BLACK1; else c_color = WHITE1;
+        if (c_color==color::White) c_color = color::Black; else c_color = color::White;
         mTime1 = mygame.getTime();
     }
     for(int i=10;i<mygame.display.getHeight()/2-mygame.display.fontHeight/2;i+=10)
@@ -87,14 +89,15 @@ void showTitleScreen() {
     for(int i=mygame.display.getHeight()-10;i>mygame.display.getHeight()/2+mygame.display.fontHeight/2;i-=10)
         mygame.display.drawLine(0,i-offset,mygame.display.getWidth(),i-offset);
 
-    mygame.display.setColor(c_color);
+    mygame.display.setColor(colorToIndex(c_color));
     mygame.display.setCursor(mygame.display.getWidth()/2-mygame.display.fontWidth*3+5,mygame.display.getHeight()-mygame.display.fontHeight-3);
     mygame.display.println("Press C");
 
     if (mygame.buttons.pressed(BTN_C)) {
         gameState = GameState::GamePlay;
         mygame.display.setFont(font3x5);
-        mBoard = Board(&mPieces2, mScreenHeight);
+//        mBoard = Board(mPieces2, mScreenHeight);
+        mBoard = Board(mScreenHeight);
         speed = 1;
         level = 0;
         score = 0;
@@ -186,11 +189,11 @@ void playGame() {
 
 void showGameOver(){
     mygame.display.setFont(fontKoubit);
-    mygame.display.setColor(RED);
+    mygame.display.setColor(colorToIndex(color::Red));
     mygame.display.setCursor(mygame.display.getWidth()/2-mygame.display.fontWidth*3+2,10);
     mygame.display.println("Game Over");
     mygame.display.println();
-    mygame.display.setColor(ORANGE);
+    mygame.display.setColor(colorToIndex(color::Orange));
     mygame.display.print(" Level: ");
     mygame.display.println(level);
     mygame.display.print(" Lines: ");
@@ -202,12 +205,12 @@ void showGameOver(){
     mTime2 = mygame.getTime();
     if ((mTime2 - mTime1)>waitTime/8)
         {
-            if (c_color==WHITE1) c_color= BLACK1; else c_color = WHITE1;
+            if (c_color==color::White) c_color= color::Black; else c_color = color::White;
             mTime1 = mygame.getTime();
         }
 
     mygame.display.setCursor(mygame.display.getWidth()/2-mygame.display.fontWidth*3+5,mygame.display.getHeight()-mygame.display.fontHeight-3);
-    mygame.display.setColor(c_color);
+    mygame.display.setColor(colorToIndex(c_color));
     mygame.display.println("Press C");
 
     if (mygame.buttons.pressed(BTN_C)) {
